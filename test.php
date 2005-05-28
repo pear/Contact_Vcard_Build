@@ -34,7 +34,11 @@
         'Beverly Hills', 'CA', '90210', 'US');
     $vcard->addParam('TYPE', 'WORK');
     
+    // set the title (checks for colon-escaping)
+    $vcard->setTitle('The Title: The Subtitle');
+    
     // send the vcard
-    $vcard->send('boshag.txt', 'inline');
+    header('Content-Type: text/plain');
+    echo $vcard->fetch();
     
 ?>
