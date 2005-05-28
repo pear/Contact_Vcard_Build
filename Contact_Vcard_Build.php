@@ -167,6 +167,10 @@ class Contact_Vcard_Build extends PEAR {
             
         } else {
         
+            // escape colons not led by a backslash
+            $regex = '(?<!\\\\)(\:)';
+            $text = preg_replace("/$regex/i", "\\:", $text);
+            
             // escape semicolons not led by a backslash
             $regex = '(?<!\\\\)(\;)';
             $text = preg_replace("/$regex/i", "\\;", $text);
