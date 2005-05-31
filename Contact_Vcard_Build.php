@@ -140,6 +140,7 @@ class Contact_Vcard_Build extends PEAR {
     * does not return a value.  Recursively descends into arrays.
     * 
     * Escapes a string so that...
+    *     : => \;
     *     ; => \;
     *     , => \,
     *     newline => literal \n
@@ -167,6 +168,7 @@ class Contact_Vcard_Build extends PEAR {
             
         } else {
         
+            /*
             // escape colons not led by a backslash
             $regex = '(?<!\\\\)(\:)';
             $text = preg_replace("/$regex/i", "\\:", $text);
@@ -182,6 +184,11 @@ class Contact_Vcard_Build extends PEAR {
             // escape newlines
             $regex = '\\n';
             $text = preg_replace("/$regex/i", "\\n", $text);
+            */
+            
+            // combined (per note from Daniel Convissor)
+            $regex = '(?<!\\\\)([\:\;\,\\n])';
+            $text = preg_replace("/$regex/", '\\\$1', $text);
             
         }
     }
