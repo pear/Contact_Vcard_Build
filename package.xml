@@ -1,29 +1,122 @@
-<?xml version="1.0" encoding="ISO-8859-1" ?>
-<package version="1.0">
-  <name>Contact_Vcard_Build</name>
-  <summary>Build (create) and fetch vCard 2.1 and 3.0 text blocks.</summary>
-  <description>Allows you to programmatically create a vCard, version 2.1 or 3.0, and fetch the vCard text.</description>
-  <maintainers>
-    <maintainer>
-      <user>pmjones</user>
-      <name>Paul M. Jones</name>
-      <email>pjones@ciaweb.net</email>
-      <role>lead</role>
-    </maintainer>
-  </maintainers>
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.5.0RC1" version="2.0"
+ xmlns="http://pear.php.net/dtd/package-2.0"
+ xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+http://pear.php.net/dtd/tasks-1.0.xsd
+http://pear.php.net/dtd/package-2.0
+http://pear.php.net/dtd/package-2.0.xsd">
+ <name>Contact_Vcard_Build</name>
+ <channel>pear.php.net</channel>
+ <summary>Build (create) and fetch vCard 2.1 and 3.0 text blocks.</summary>
+ <description>
+  Allows you to programmatically create a vCard,
+  version 2.1 or 3.0, and fetch the vCard text.
+ </description>
+ <lead>
+  <name>Paul M. Jones</name>
+  <user>pmjones</user>
+  <email>pjones@ciaweb.net</email>
+  <active>yes</active>
+ </lead>
+
+ <date>2006-12-12</date>
+ <time>17:47:05</time>
+ <version>
+  <release>1.1.2</release>
+  <api>1.1.0</api>
+ </version>
+
+ <stability>
+  <release>stable</release>
+  <api>stable</api>
+ </stability>
+
+ <license uri="http://www.php.net/license">PHP License</license>
+
+ <notes>
+  * Fixing bug #7979: Documentation for addParam() method
+  * Fixing bug #7992: Package breask class name - path rule
+  * Fixing bug #7473: PROFILE:VCARD in wrong spot
+ </notes>
+ <contents>
+  <dir name="/">
+   <dir name="Contact">
+    <dir name="Vcard">
+     <file name="Build.php" role="php"/>
+    </dir>
+   </dir>
+   <file name="Contact_Vcard_Build.php" role="php" />
+   <file name="test.php" role="doc" />
+  </dir>
+ </contents>
+
+ <dependencies>
+  <required>
+   <php>
+    <min>4.0.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease />
+
+ <changelog>
+
   <release>
-    <version>1.1</version>
-    <date>2003-02-02</date>
-    <license>PHP License</license>
-    <state>stable</state>
-    <notes>
-    	* No longer generates notices when counting nonexistent components (thanks to Andrew Nagy for the bug report)
-    	* Added send() method to send headers and vCard text (suggested by Andrew Nagy)
-    	* Now runs clean under E_ALL
-    </notes>
-    <filelist>
-      <file role="php" name="Contact_Vcard_Build.php"/>
-      <file role="test" name="test.php" />
-    </filelist>
+   <version>
+    <release>1.1.2</release>
+    <api>1.1.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2006-12-12</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>
+  * Fixing bug #7979: Documentation for addParam() method
+  * Fixing bug #7992: Package breask class name - path rule
+  * Fixing bug #7473: PROFILE:VCARD in wrong spot
+   </notes>
   </release>
+
+  <release>
+   <version>
+    <release>1.1.1</release>
+    <api>1.1.0</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2005-05-28</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>
+    * Fixed bug 2660 "escape() doesn't escape colons"
+   </notes>
+  </release>
+
+  <release>
+   <version>
+    <release>1.1</release>
+    <api>1.1</api>
+   </version>
+   <stability>
+    <release>stable</release>
+    <api>stable</api>
+   </stability>
+   <date>2003-02-02</date>
+   <license uri="http://www.php.net/license">PHP License</license>
+   <notes>
+    * No longer generates notices when counting nonexistent components (thanks to Andrew Nagy for the bug report)
+    * Added send() method to send headers and vCard text (suggested by Andrew Nagy)
+    * Now runs clean under E_ALL
+   </notes>
+  </release>
+
+ </changelog>
 </package>
