@@ -169,7 +169,11 @@ class Contact_Vcard_Build extends PEAR
         // combined (per note from Daniel Convissor)
         $regex = '(?<!\\\\)([\:\;\,\\n])';
         $text  = preg_replace("/$regex/", '\\\$1', $text);
-
+        
+        // fix http(s)\:// to http(s)://
+        $text  = str_replace('http\://', 'http://', $text);
+        $text  = str_replace('https\://', 'http://', $text);
+        
 		return;
     }
 
@@ -595,15 +599,15 @@ class Contact_Vcard_Build extends PEAR
      * values.  There can only be one N component per vCard.
      *
      * @param  mixed $family Single (string) or multiple (array)
-     *                      family/last name.
+     *                       family/last name.
      * @param  mixed $given  Single (string) or multiple (array)
-     *                      given/first name.
+     *                       given/first name.
      * @param  mixed $addl   Single (string) or multiple (array)
-     *                      additional/middle name.
+     *                       additional/middle name.
      * @param  mixed $prefix Single (string) or multiple (array) honorific
-     *                      prefix such as Mr., Miss, etc.
+     *                       prefix such as Mr., Miss, etc.
      * @param  mixed $suffix Single (string) or multiple (array) honorific
-     *                      suffix such as III, Jr., Ph.D., etc.
+     *                       suffix such as III, Jr., Ph.D., etc.
      * @access public
      * @return void
      */
@@ -798,13 +802,19 @@ class Contact_Vcard_Build extends PEAR
      * per vCard.
      *
      * @param  string $text The value to set for this component.
+     * @param  boolean $url True or false, depending if $text is one.
      * @access public
      * @return void
      */
-    function setPhoto($text)
+    function setPhoto($text, $url = false)
     {
-        $this->autoparam = 'PHOTO';
-        $this->setValue('PHOTO', 0, 0, $text);
+        if ($url === false) {
+            $this->autoparam = 'PHOTO';
+            $this->setValue('PHOTO', 0, 0, $text);
+            return;
+        }
+        $this->autoparam = 'PHOTO:URI';
+        $this->setValue('PHOTO:URI', 0, 0, $text);
     }
 
     /**
@@ -812,11 +822,18 @@ class Contact_Vcard_Build extends PEAR
      * allowed per vCard.
      *
      * @access public
-     * @return string The value of this component.
+     * @return string The value of this component or false if no photo is set.
      */
     function getPhoto()
     {
-        return $this->getMeta('PHOTO') . $this->getValue('PHOTO', 0, 0);
+        if (isset($this->value['PHOTO'])) {
+            return $this->getMeta('PHOTO') . $this->getValue('PHOTO', 0, 0);
+        }
+        if (isset($this->value['PHOTO:URI'])) {
+            return $this->getMeta('PHOTO:URI') .
+                $this->getValue('PHOTO:URI', 0, 0);
+        }
+        return false;
     }
 
     /**
@@ -1700,8 +1717,9 @@ class Contact_Vcard_Build extends PEAR
 
         // personal photo
         // available in both 2.1 and 3.0
-        if (isset($this->value['PHOTO'])) {
-            $lines[] = $this->getPhoto();
+        $_photo = $this->getPhoto();
+        if ($_photo !== false) {
+            $lines[] = $_photo;
         }
 
         // bday
@@ -1924,6 +1942,34 @@ class Contact_Vcard_Build extends PEAR
         echo $vcard;
     }
 
+    /**
+     * Gets the left-side/prefix/before-the-colon (metadata) part of a
+     * vCard line, including the component identifier, the parameter
+     * list, and a colon.
+     *
+     * @access public
+     * @param  string $comp The component to get metadata for (ADR, TEL,
+     *                      etc).
+     * @param  int $iter The vCard component iteration to get the metadata
+     *                   for. E.g., if you have more than one ADR component,
+     *                   0 refers to the first ADR, 1 to the second ADR,
+     *                   and so on.
+     * @return string The line prefix metadata.
+     */
+    function getMeta($comp, $iter = 0)
+    {
+        $params = $this->getParam($comp, $iter);
+
+        if (trim($params) == '') {
+            // no parameters
+            $text = $comp . ':';
+        } else {
+            // has parameters.  put an extra semicolon in.
+            $text = $comp . ';' . $params . ':';
+        }
+
+        return $text;
+    }
 
     /**
      * Count the number of iterations for an element type.
