@@ -1389,14 +1389,11 @@ class Contact_Vcard_Build extends PEAR
     /**
      * Gets back the value of one ADR component iteration.
      *
-     * @param int $iter The component iteration-number to get the value
-     * for.
-     *
+     * @param  int $iter The component iteration-number to get the value
+     *         for.
      * @access public
-     *
      * @return mixed The value of this component iteration, or a
-     * PEAR_Error if the iteration is not valid.
-     *
+     *         PEAR_Error if the iteration is not valid.
      */
     function getAddress($iter)
     {
@@ -1433,14 +1430,11 @@ class Contact_Vcard_Build extends PEAR
      * Gets back the value of one iteration of the LABEL component.
      * There can be zero, one, or more component iterations in a vCard.
      *
-     * @param int $iter The component iteration-number to get the value
-     * for.
-     *
+     * @param  int $iter The component iteration-number to get the value
+     *         for.
      * @access public
-     *
      * @return mixed The value of this component, or a PEAR_Error if
-     * the iteration number is not valid.
-     *
+     *         the iteration number is not valid.
      */
     function getLabel($iter)
     {
@@ -1452,42 +1446,55 @@ class Contact_Vcard_Build extends PEAR
     }
 
     /**
-     * Sets the value of one TEL component iteration.  There can be zero,
-     * one, or more component iterations in a vCard.
+     * Sets the value of one component iteration. There can be zero,
+     * one, or more component iterations in a vCard. This function also
+	 * takes a type argument to be able to add mobiles, fax and voice 
+	 * as well.
      *
-     * @param string $text The value to set for this component.
+     * @param  string $text The value to set for this component.
+     * @param  string $type The type: phone, mobile, fax or voice 
      * @access public
-     * @return void
+     * @return mixed  void on success, PEAR_Error on failure
+	 * @uses   self::_getTelephoneType()
      */
-    function addTelephone($text)
+    function addTelephone($text, $type = 'phone')
     {
-        $this->autoparam = 'TEL';
-        $iter            = $this->countIter('TEL');
-        $this->setValue('TEL', $iter, 0, $text);
+        $autoparam = $this->_getTelephoneType($type);
+		if (PEAR::isError($autoparam)) {
+			return $autoparam;
+		}
+        
+        $iter = $this->countIter($this->autoparam);
+        $this->setValue($this->autoparam, $iter, 0, $text);
     }
 
     /**
      * Gets back the value of one iteration of the TEL component.  There
      * can be zero, one, or more component iterations in a vCard.
      *
-     * @param int $iter The component iteration-number to get the value
-     * for.
-     *
+     * @param  int $iter The component iteration-number to get the value
+     *         for.
+	 * @param  string $type The type: phone, mobile, fax, voice
      * @access public
      * @return mixed The value of this component, or a PEAR_Error if the
-     * iteration number is not valid.
+     *         iteration number is not valid.
+	 * @uses    self::_getTelephoneType()
      */
-    function getTelephone($iter)
+    function getTelephone($iter, $type = 'phone')
     {
-        if (! is_integer($iter) || $iter < 0) {
-            return $this->raiseError('TEL iteration number not valid.');
-        } else {
-            return $this->getMeta('TEL', $iter) .
-                $this->getValue('TEL', $iter, 0);
+    	$autoparam = $this->_getTelephoneType($type);
+		if (PEAR::isError($autoparam)) {
+			return $autoparam;
+		}
+		
+        if (!is_integer($iter) || $iter < 0) {
+            return $this->raiseError($autoparam . ' iteration number not valid.');
         }
+		
+		return $this->getMeta($autoparam, $iter) . $this->getValue($autoparam, $iter, 0);
     }
-
-    /**
+	
+   /**
      * Sets the value of one EMAIL component iteration.  There can be zero,
      * one, or more component iterations in a vCard.
      *
@@ -1501,7 +1508,6 @@ class Contact_Vcard_Build extends PEAR
         $iter            = $this->countIter('EMAIL');
         $this->setValue('EMAIL', $iter, 0, $text);
     }
-
 
     /**
      * Gets back the value of one iteration of the EMAIL component.  There can
@@ -1811,6 +1817,13 @@ class Contact_Vcard_Build extends PEAR
                 $lines[] = $this->getTelephone($key);
             }
         }
+		
+		// mobiles
+		if (isset($this->value['TEL;PREF;CELL'])) {
+            foreach ($this->value['TEL;PREF;CELL'] as $key => $val) {
+                $lines[] = $this->getTelephone($key, 'mobile');
+            }
+        }
 
         // email
         // available in both 2.1 and 3.0
@@ -2088,6 +2101,39 @@ class Contact_Vcard_Build extends PEAR
     {
         $this->param[strtoupper($comp)][$iter][$part][$rept] = $text;
     }
+	
+		/**
+	 * _getTelephoneType
+	 *
+	 * Resolves a HR friendly type to the internal
+	 * type used in the VCARD spec.
+	 *
+	 * @access private
+	 * @param  string $type
+	 * @return mixed  string $type or Pear_Error
+	 * @see    self::addTelephone()
+	 * @ses    self::getTelephone()
+	 */
+	function _getTelephoneType($type)
+	{
+		switch ($type) {
+
+            case 'phone':
+                return 'TEL';
+                break;
+			
+            case 'mobile':
+                return 'TEL;PREF;CELL';
+                break;
+				
+            case 'voice':
+			case 'fax':
+			default:
+				$msg = 'Type: ' . $type . ' is not yet implemented.';
+			    return $this->raiseError($msg);
+				break;
+    	}
+	}
 }
 
 ?>
