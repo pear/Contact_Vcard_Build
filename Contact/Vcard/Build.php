@@ -239,23 +239,17 @@ class Contact_Vcard_Build extends PEAR
 
     }
 
-
     /**
      * Validates parameter names and values based on the vCard version
      * (2.1 or 3.0).
      *
-     * @param string $name The parameter name (e.g., TYPE or ENCODING).
-     *
-     * @param string $text The parameter value (e.g., HOME or BASE64).
-     *
-     * @param string $comp Optional, the component name (e.g., ADR or
-     * PHOTO).  Only used for error messaging.
-     *
-     * @param string $iter Optional, the iteration of the component.
-     * Only used for error messaging.
-     *
+     * @param  string $name The parameter name (e.g., TYPE or ENCODING).
+     * @param  string $text The parameter value (e.g., HOME or BASE64).
+     * @param  string $comp Optional, the component name (e.g., ADR or
+     *                       PHOTO). Only used for error messaging.
+     * @param  string $iter Optional, the iteration of the component.
+     *                      Only used for error messaging.
      * @access public
-     *
      * @return mixed Boolean true if the parameter is valid, or a
      * PEAR_Error object if not.
      *
@@ -268,6 +262,9 @@ class Contact_Vcard_Build extends PEAR
 		switch($comp) {
 			
             case 'TEL':
+			case 'TEL;PREF;CELL':
+			case 'TEL;PREF;VOICE':
+			case 'TEL;PREF;FAX':
             case 'EMAIL':
             case 'ADR':
                 break;
@@ -279,6 +276,7 @@ class Contact_Vcard_Build extends PEAR
 		            $msg = "vCard [$comp] [$iter] [$name]: ";
 		            $msg.= 'The parameter value may contain only ';
 		            $msg.= 'a-z, A-Z, 0-9, and dashes (-).';
+					
 		            return $this->raiseError($msg);
 		
 		        }
@@ -1778,6 +1776,20 @@ class Contact_Vcard_Build extends PEAR
                 $lines[] = $this->getTelephone($key, 'mobile');
             }
         }
+		
+		// voice
+		if (isset($this->value['TEL;PREF;VOICE'])) {
+            foreach ($this->value['TEL;PREF;VOICE'] as $key => $val) {
+                $lines[] = $this->getTelephone($key, 'voice');
+            }
+        }
+		
+		// fax
+		if (isset($this->value['TEL;PREF;FAX'])) {
+            foreach ($this->value['TEL;PREF;FAX'] as $key => $val) {
+                $lines[] = $this->getTelephone($key, 'fax');
+            }
+        }
 
         // email
         // available in both 2.1 and 3.0
@@ -2072,7 +2084,13 @@ class Contact_Vcard_Build extends PEAR
                 break;
 				
             case 'voice':
+				return 'TEL;PREF;VOICE';
+				break;
+				
 			case 'fax':
+				return 'TEL;PREF;FAX';
+				break;
+				
 			default:
 				$msg = 'Type: ' . $type . ' is not yet implemented.';
 			    return $this->raiseError($msg);
