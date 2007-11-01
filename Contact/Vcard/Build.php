@@ -1,5 +1,4 @@
 <?php
-/* vim: set expandtab tabstop=4 softtabstop=4 shiftwidth=4: */
 /**
  * Build (create) and fetch vCard 2.1 and 3.0 text blocks.
  *
@@ -813,8 +812,8 @@ class Contact_Vcard_Build extends PEAR
             $this->setValue('PHOTO', 0, 0, $text);
             return;
         }
-        $this->autoparam = 'PHOTO:URI';
-        $this->setValue('PHOTO:URI', 0, 0, $text);
+        $this->autoparam = 'PHOTO;VALUE=URI';
+        $this->setValue('PHOTO;VALUE=URI', 0, 0, $text);
     }
 
     /**
@@ -829,9 +828,9 @@ class Contact_Vcard_Build extends PEAR
         if (isset($this->value['PHOTO'])) {
             return $this->getMeta('PHOTO') . $this->getValue('PHOTO', 0, 0);
         }
-        if (isset($this->value['PHOTO:URI'])) {
-            return $this->getMeta('PHOTO:URI') .
-                $this->getValue('PHOTO:URI', 0, 0);
+        if (isset($this->value['PHOTO;VALUE=URI'])) {
+            return $this->getMeta('PHOTO;VALUE=URI') .
+                $this->getValue('PHOTO;VALUE=URI', 0, 0);
         }
         return false;
     }
@@ -1175,8 +1174,9 @@ class Contact_Vcard_Build extends PEAR
     }
 
     /**
-     * Sets the value of the REV component.  There is only one allowed
-     * per vCard.
+     * Sets the value of the REV component. There is only one allowed
+     * per vCard. This value is free and should reflect whatever you use
+     * for control - e.g. a DATETIME value.
      *
      * @param string $text The value to set for this component.
      * @access public
@@ -1403,8 +1403,10 @@ class Contact_Vcard_Build extends PEAR
 			return $autoparam;
 		}
         
-        $iter = $this->countIter($this->autoparam);
-        $this->setValue($this->autoparam, $iter, 0, $text);
+        $iter = $this->countIter($autoparam);
+        $this->setValue($autoparam, $iter, 0, $text);
+        
+        $this->autoparam = $autoparam;
     }
 
     /**
@@ -1752,22 +1754,22 @@ class Contact_Vcard_Build extends PEAR
             }
         }
 		
-		// mobiles
-		if (isset($this->value['TEL;PREF;CELL'])) {
+        // mobiles
+        if (isset($this->value['TEL;PREF;CELL'])) {
             foreach ($this->value['TEL;PREF;CELL'] as $key => $val) {
                 $lines[] = $this->getTelephone($key, 'mobile');
             }
         }
 		
-		// voice
-		if (isset($this->value['TEL;PREF;VOICE'])) {
+        // voice
+        if (isset($this->value['TEL;PREF;VOICE'])) {
             foreach ($this->value['TEL;PREF;VOICE'] as $key => $val) {
                 $lines[] = $this->getTelephone($key, 'voice');
             }
         }
 		
-		// fax
-		if (isset($this->value['TEL;PREF;FAX'])) {
+        // fax
+        if (isset($this->value['TEL;PREF;FAX'])) {
             foreach ($this->value['TEL;PREF;FAX'] as $key => $val) {
                 $lines[] = $this->getTelephone($key, 'fax');
             }
