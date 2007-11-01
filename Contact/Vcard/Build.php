@@ -142,32 +142,32 @@ class Contact_Vcard_Build extends PEAR
                 $this->escape($val);
                 $text[$key] = $val;
             }
-
-        } else {
-
-            /*
-            // escape colons not led by a backslash
-            $regex = '(?<!\\\\)(\:)';
-            $text = preg_replace("/$regex/i", "\\:", $text);
-
-            // escape semicolons not led by a backslash
-            $regex = '(?<!\\\\)(\;)';
-            $text = preg_replace("/$regex/i", "\\;", $text);
-
-            // escape commas not led by a backslash
-            $regex = '(?<!\\\\)(\,)';
-            $text = preg_replace("/$regex/i", "\\,", $text);
-
-            // escape newlines
-            $regex = '\\n';
-            $text = preg_replace("/$regex/i", "\\n", $text);
-            */
-
-            // combined (per note from Daniel Convissor)
-            $regex = '(?<!\\\\)([\:\;\,\\n])';
-            $text  = preg_replace("/$regex/", '\\\$1', $text);
-
+			return;
         }
+
+        /*
+        // escape colons not led by a backslash
+        $regex = '(?<!\\\\)(\:)';
+        $text = preg_replace("/$regex/i", "\\:", $text);
+
+        // escape semicolons not led by a backslash
+        $regex = '(?<!\\\\)(\;)';
+        $text = preg_replace("/$regex/i", "\\;", $text);
+
+        // escape commas not led by a backslash
+        $regex = '(?<!\\\\)(\,)';
+        $text = preg_replace("/$regex/i", "\\,", $text);
+
+        // escape newlines
+        $regex = '\\n';
+        $text = preg_replace("/$regex/i", "\\n", $text);
+        */
+
+        // combined (per note from Daniel Convissor)
+        $regex = '(?<!\\\\)([\:\;\,\\n])';
+        $text  = preg_replace("/$regex/", '\\\$1', $text);
+
+		return;
     }
 
 
@@ -187,25 +187,19 @@ class Contact_Vcard_Build extends PEAR
      * $vcard->addParam('TYPE', 'HOME', 'TEL', 0);
      * $vcard->addParam('TYPE', 'PREF', 'TEL', 0);
      *
-     * @param string $param_name  The parameter name, such as TYPE, VALUE,
-     * or ENCODING.
-     *
-     * @param string $param_value The parameter value.
-     *
-     * @param string $comp        The vCard component for which this is a
-     * paramter (ADR, TEL, etc).  If null, will be the component that was
-     * last set or added-to.
-     *
-     * @param mixed  $iter        An integer vCard component iteration that this
-     * is a param for.  E.g., if you have more than one ADR component, 0
-     * refers to the first ADR, 1 to the second ADR, and so on.  If null,
-     * the parameter will be added to the last component iteration
-     * available.
-     *
+     * @param  string $param_name  The parameter name, such as TYPE, VALUE,
+     *         or ENCODING.
+     * @param  string $param_value The parameter value.
+     * @param  string $comp        The vCard component for which this is a
+     *         paramter (ADR, TEL, etc).  If null, will be the component that was
+     *         last set or added-to.
+     * @param  mixed  $iter        An integer vCard component iteration that this
+     *         is a param for.  E.g., if you have more than one ADR component, 0
+     *         refers to the first ADR, 1 to the second ADR, and so on.  If null,
+     *         the parameter will be added to the last component iteration
+     *         available.
      * @access public
-     *
      * @return mixed Void on success, or a PEAR_Error object on failure.
-     *
      */
     function addParam($param_name, $param_value, $comp = null, $iter = null)
     {
@@ -234,15 +228,15 @@ class Contact_Vcard_Build extends PEAR
 			
             return $this->raiseError($msg);
 
-        } else {
-
-            $result = $this->validateParam($param_name, $param_value, $comp, $iter);
-
-            if (PEAR::isError($result)) {
-                return $result;
-            }
-            $this->param[$comp][$iter][$param_name][] = $param_value;
         }
+
+        $result = $this->validateParam($param_name, $param_value, $comp, $iter);
+
+        if (PEAR::isError($result)) {
+            return $result;
+        }
+        $this->param[$comp][$iter][$param_name][] = $param_value;
+
     }
 
 
@@ -489,9 +483,8 @@ class Contact_Vcard_Build extends PEAR
     /**
      * Resets the vCard values and params to be blank.
      *
-     * @param string $version The vCard version to reset to ('2.1' or
-     * '3.0' -- default is the same version as previously set).
-     *
+     * @param  string $version The vCard version to reset to ('2.1' or
+     *         '3.0' -- default is the same version as previously set).
      * @access public
      * @return void
      */
@@ -517,17 +510,13 @@ class Contact_Vcard_Build extends PEAR
      * element.  This forces the value to be the passed text or array
      * value, overriding any prior values.
      *
-     * @param string $comp The component to set the value for ('N',
-     * 'ADR', etc).
-     *
-     * @param int    $iter The component-iteration to set the value for.
-     *
-     * @param int    $part The part number of the component-iteration to set
-     * the value for.
-     *
-     * @param mixed  $text A string or array; the set of repeated values
-     * for this component-iteration part.
-     *
+     * @param  string $comp The component to set the value for ('N',
+     *         'ADR', etc).
+     * @param  int    $iter The component-iteration to set the value for.
+     * @param  int    $part The part number of the component-iteration to set
+     *         the value for.
+     * @param  mixed  $text A string or array; the set of repeated values
+     *         for this component-iteration part.
      * @access public
      * @return void
      */
@@ -547,16 +536,12 @@ class Contact_Vcard_Build extends PEAR
      * vCard element.  This appends the value to be the passed text or
      * array value, leaving any prior values in place.
      *
-     * @param string $comp The component to set the value for ('N', 'ADR', etc).
-     *
-     * @param int    $iter The component-iteration to set the value for.
-     *
-     * @param int    $part The part number of the component-iteration to set
+     * @param  string $comp The component to set the value for ('N', 'ADR', etc).
+     * @param  int    $iter The component-iteration to set the value for.
+     * @param  int    $part The part number of the component-iteration to set
      *                     the value for.
-     *
-     * @param mixed  $text A string or array; the set of repeated values
+     * @param  mixed  $text A string or array; the set of repeated values
      *                     for this component-iteration part.
-     *
      * @access public
      * @return void
      */
@@ -574,24 +559,18 @@ class Contact_Vcard_Build extends PEAR
     /**
      * Generic, all-purpose method to get back the data stored in $this->value.
      *
-     * @param string $comp The component to set the value for ('N',
-     * 'ADR', etc).
-     *
-     * @param int    $iter The component-iteration to set the value for.
-     *
-     * @param int    $part The part number of the component-iteration to get
+     * @param  string $comp The component to set the value for ('N',
+     *         'ADR', etc).
+     * @param  int    $iter The component-iteration to set the value for.
+     * @param  int    $part The part number of the component-iteration to get
      *                     the value for.
-     *
-     * @param mixed  $rept The repetition number within the part to get;
+     * @param  mixed  $rept The repetition number within the part to get;
      *                     if null, get all repetitions of the part within the
      *                     iteration.
-     *
      * @access public
-     *
      * @return string The value, escaped and delimited, of all
-     * repetitions in the component-iteration part (or specific
-     * repetition within the part).
-     *
+     *         repetitions in the component-iteration part (or specific
+     *         repetition within the part).
      */
     function getValue($comp, $iter = 0, $part = 0, $rept = null)
     {
@@ -619,21 +598,16 @@ class Contact_Vcard_Build extends PEAR
      * Sets the full N component of the vCard.  Will replace all other
      * values.  There can only be one N component per vCard.
      *
-     * @param mixed $family Single (string) or multiple (array)
+     * @param  mixed $family Single (string) or multiple (array)
      *                      family/last name.
-     *
-     * @param mixed $given  Single (string) or multiple (array)
+     * @param  mixed $given  Single (string) or multiple (array)
      *                      given/first name.
-     *
-     * @param mixed $addl   Single (string) or multiple (array)
+     * @param  mixed $addl   Single (string) or multiple (array)
      *                      additional/middle name.
-     *
-     * @param mixed $prefix Single (string) or multiple (array) honorific
+     * @param  mixed $prefix Single (string) or multiple (array) honorific
      *                      prefix such as Mr., Miss, etc.
-     *
-     * @param mixed $suffix Single (string) or multiple (array) honorific
+     * @param  mixed $suffix Single (string) or multiple (array) honorific
      *                      suffix such as III, Jr., Ph.D., etc.
-     *
      * @access public
      * @return void
      */
@@ -761,8 +735,7 @@ class Contact_Vcard_Build extends PEAR
      */
     function getVersion()
     {
-        return $this->getMeta('VERSION', 0) .
-            $this->getValue('VERSION', 0);
+        return $this->getMeta('VERSION', 0) . $this->getValue('VERSION', 0);
     }
 
 
@@ -788,8 +761,7 @@ class Contact_Vcard_Build extends PEAR
      */
     function getSource()
     {
-        return $this->getMeta('SOURCE', 0) .
-            $this->getValue('SOURCE', 0, 0);
+        return $this->getMeta('SOURCE', 0) . $this->getValue('SOURCE', 0, 0);
     }
 
 
@@ -828,8 +800,7 @@ class Contact_Vcard_Build extends PEAR
      */
     function getSourceName()
     {
-        return $this->getMeta('NAME', 0) .
-            $this->getValue('NAME', 0, 0);
+        return $this->getMeta('NAME', 0) . $this->getValue('NAME', 0, 0);
     }
 
     /**
@@ -857,8 +828,7 @@ class Contact_Vcard_Build extends PEAR
      */
     function getPhoto()
     {
-        return $this->getMeta('PHOTO') .
-            $this->getValue('PHOTO', 0, 0);
+        return $this->getMeta('PHOTO') . $this->getValue('PHOTO', 0, 0);
     }
 
 
@@ -918,8 +888,7 @@ class Contact_Vcard_Build extends PEAR
      */
     function getSound()
     {
-        return $this->getMeta('SOUND') .
-            $this->getValue('SOUND', 0, 0);
+        return $this->getMeta('SOUND') . $this->getValue('SOUND', 0, 0);
     }
 
 
@@ -1032,8 +1001,7 @@ class Contact_Vcard_Build extends PEAR
      */
     function getMailer()
     {
-        return $this->getMeta('MAILER') .
-            $this->getValue('MAILER', 0, 0);
+        return $this->getMeta('MAILER') . $this->getValue('MAILER', 0, 0);
     }
 
     /**
@@ -1166,8 +1134,7 @@ class Contact_Vcard_Build extends PEAR
      */
     function getClass()
     {
-        return $this->getMeta('CLASS') .
-            $this->getValue('CLASS', 0, 0);
+        return $this->getMeta('CLASS') . $this->getValue('CLASS', 0, 0);
     }
 
 
@@ -1194,8 +1161,7 @@ class Contact_Vcard_Build extends PEAR
      */
     function getSortString()
     {
-        return $this->getMeta('SORT-STRING') .
-            $this->getValue('SORT-STRING', 0, 0);
+        return $this->getMeta('SORT-STRING') . $this->getValue('SORT-STRING', 0, 0);
     }
 
     /**
@@ -1300,8 +1266,7 @@ class Contact_Vcard_Build extends PEAR
      */
     function getAgent()
     {
-        return $this->getMeta('AGENT') .
-            $this->getValue('AGENT', 0, 0);
+        return $this->getMeta('AGENT') . $this->getValue('AGENT', 0, 0);
     }
 
     /**
@@ -1340,34 +1305,27 @@ class Contact_Vcard_Build extends PEAR
      * Sets the value of one entire ADR iteration.  There can be zero,
      * one, or more ADR components in a vCard.
      *
-     * @param mixed $pob      String (one repetition) or array (multiple
+     * @param  mixed $pob      String (one repetition) or array (multiple
      *                   repetitions) of the p.o. box part of the ADR
      *                   component iteration.
-     *
-     * @param mixed $extend   String (one repetition) or array (multiple
+     * @param  mixed $extend   String (one repetition) or array (multiple
      *                   repetitions) of the "extended address" part
      *                   of the ADR component  iteration.
-     *
-     * @param mixed $street   String (one repetition) or array (multiple
+     * @param  mixed $street   String (one repetition) or array (multiple
      *                   repetitions) of the street address part of the ADR
      *                   component iteration.
-     *
-     * @param mixed $locality String (one repetition) or array (multiple
+     * @param  mixed $locality String (one repetition) or array (multiple
      *                   repetitions) of the locailty (e.g., city) part of the
      *                   ADR component iteration.
-     *
-     * @param mixed $region   String (one repetition) or array (multiple
+     * @param  mixed $region   String (one repetition) or array (multiple
      *                   repetitions) of the region (e.g., state, province, or
      *                   governorate) part of the ADR component iteration.
-     *
-     * @param mixed $postcode String (one repetition) or array (multiple
+     * @param  mixed $postcode String (one repetition) or array (multiple
      *                   repetitions) of the postal code (e.g., ZIP code) part
      *                   of the ADR component iteration.
-     *
-     * @param mixed $country  String (one repetition) or array (multiple
+     * @param  mixed $country  String (one repetition) or array (multiple
      *                   repetitions) of the country-name part of the ADR
      *                   component iteration.
-     *
      * @access public
      * @return void
      */
@@ -1494,7 +1452,7 @@ class Contact_Vcard_Build extends PEAR
 		return $this->getMeta($autoparam, $iter) . $this->getValue($autoparam, $iter, 0);
     }
 	
-   /**
+    /**
      * Sets the value of one EMAIL component iteration.  There can be zero,
      * one, or more component iterations in a vCard.
      *
@@ -1532,16 +1490,15 @@ class Contact_Vcard_Build extends PEAR
     }
 
     /**
-    * Sets the full value of the NICKNAME component.  There is only one
-    * component iteration allowed per vCard, but there may be multiple
-    * value repetitions in the iteration.
-    *
-    * @param mixed $text String (one repetition) or array (multiple
-    * reptitions) of the component iteration value.
-    *
-    * @access public
-    * @return void
-    */
+     * Sets the full value of the NICKNAME component.  There is only one
+     * component iteration allowed per vCard, but there may be multiple
+     * value repetitions in the iteration.
+     *
+     * @param  mixed $text String (one repetition) or array (multiple
+     *         reptitions) of the component iteration value.
+     * @access public
+     * @return void
+     */
     function addNickname($text)
     {
         $this->autoparam = 'NICKNAME';
@@ -1554,9 +1511,7 @@ class Contact_Vcard_Build extends PEAR
      * repetitions in the iteration.
      *
      * @access public
-     *
      * @return string The value of this component.
-     *
      */
     function getNickname()
     {
@@ -1569,9 +1524,8 @@ class Contact_Vcard_Build extends PEAR
      * one component iteration allowed per vCard, but there may be
      * multiple value repetitions in the iteration.
      *
-     * @param mixed $text String (one repetition) or array (multiple reptitions)
+     * @param  mixed $text String (one repetition) or array (multiple reptitions)
      *                           of the component iteration value.
-     *
      * @access public
      * @return void
      */
@@ -1715,15 +1669,15 @@ class Contact_Vcard_Build extends PEAR
 
 
     /**
-    * Fetches a full vCard text block based on $this->value and
-    * $this->param. The order of the returned components is similar to
-    * their order in RFC 2426.  Honors the value of
-    * $this->value['VERSION'] to determine which vCard components are
-    * returned (2.1- or 3.0-compliant).
-    *
-    * @access public
-    * @return string A properly formatted vCard text block.
-    */
+     * Fetches a full vCard text block based on $this->value and
+     * $this->param. The order of the returned components is similar to
+     * their order in RFC 2426.  Honors the value of
+     * $this->value['VERSION'] to determine which vCard components are
+     * returned (2.1- or 3.0-compliant).
+     *
+     * @access public
+     * @return string A properly formatted vCard text block.
+     */
     function fetch()
     {
         // vCard version is required
@@ -1966,18 +1920,14 @@ class Contact_Vcard_Build extends PEAR
         return implode($newline, $lines). $newline;
     }
 
-
     /**
      * Send the vCard as a downloadable file.
      *
-     * @param string $filename    The file name to give the vCard.
-     *
-     * @param string $disposition How the file should be sent, either
-     *                            'inline' or 'attachment'.
-     *
-     * @param string $charset     The character set to use, defaults to
-     *                            'us-ascii'.
-     *
+     * @param  string $filename    The file name to give the vCard.
+     * @param  string $disposition How the file should be sent, either
+     *                             'inline' or 'attachment'.
+     * @param  string $charset     The character set to use, defaults to
+     *                             'us-ascii'.
      * @access public
      * @return void or Pear_Error in case of an error.
      */
@@ -2003,9 +1953,8 @@ class Contact_Vcard_Build extends PEAR
     /**
      * Count the number of iterations for an element type.
      *
-     * @param string $type The element type to count iterations for
-     * (ADR, ORG, etc).
-     *
+     * @param  string $type The element type to count iterations for
+     *         (ADR, ORG, etc).
      * @access public
      * @return int The number of iterations for that type.
      */
@@ -2079,21 +2028,16 @@ class Contact_Vcard_Build extends PEAR
     /**
      * _setParam
      *
-     * @param string $comp The component to set the param for.
+     * @param  string $comp The component to set the param for.
+     * @param  int    $iter The component-iteration to set the param for.
+     * @param  int    $part The part number of the component-iteration to set
+     *                      the param for.
+     * @param  mixed  $rept The repetition number within the part to get;
+     *                      if null, get all repetitions of the part within the
+     *                      iteration.
      *
-     * @param int    $iter The component-iteration to set the param for.
-     *
-     * @param int    $part The part number of the component-iteration to set
-     * the param for.
-     *
-     * @param mixed  $rept The repetition number within the part to get;
-     *                     if null, get all repetitions of the part within the
-     *                     iteration.
-     *
-     *
-     * @param mixed  $text A string or array; the set of repeated values
-     * for this component-iteration part.
-     *
+     * @param  mixed  $text A string or array; the set of repeated values
+     *         for this component-iteration part.
      * @access protected
      * @return void
      */
@@ -2102,17 +2046,18 @@ class Contact_Vcard_Build extends PEAR
         $this->param[strtoupper($comp)][$iter][$part][$rept] = $text;
     }
 	
-		/**
+    /**
 	 * _getTelephoneType
 	 *
 	 * Resolves a HR friendly type to the internal
 	 * type used in the VCARD spec.
 	 *
-	 * @access private
+	 * @access protected
 	 * @param  string $type
 	 * @return mixed  string $type or Pear_Error
 	 * @see    self::addTelephone()
 	 * @ses    self::getTelephone()
+	 * @since  1.1.2
 	 */
 	function _getTelephoneType($type)
 	{
