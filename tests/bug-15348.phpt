@@ -3,8 +3,9 @@ For bug: #15348
 --CREDITS--
 Sixto Martín <smartin at yaco dot es>
 --SKIPIF--
-include_once 'Contact/Vcard/Parse.php';
-include_once 'Contact/Vcard/Build.php';
+<?php
+@include_once 'Contact/Vcard/Parse.php';
+@include_once 'Contact/Vcard/Build.php';
 if (!class_exists('Contact_Vcard_Parse')) {
     die('SKIP This test requires Contact_Vcard_Parse');
 }
