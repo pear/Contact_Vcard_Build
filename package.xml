@@ -16,10 +16,16 @@ http://pear.php.net/dtd/package-2.0.xsd">
   Users of Contact_Vcard_Build are encouraged to check out File_IMC.
  </description>
  <lead>
+  <name>Till Klampaeckel</name>
+  <user>till</user>
+  <email>till@php.net</email>
+  <active>yes</active>
+ </lead>
+ <lead>
   <name>Paul M. Jones</name>
   <user>pmjones</user>
   <email>pjones@ciaweb.net</email>
-  <active>yes</active>
+  <active>no</active>
  </lead>
  <date>2009-06-30</date>
  <time>20:00:00</time>
@@ -34,6 +40,7 @@ http://pear.php.net/dtd/package-2.0.xsd">
  <license uri="http://www.php.net/license">PHP License</license>
  <notes>
   * added unit test for vcard with emails
+  * added unit test for john doe
   * addressed bug #15348 (added unit-test)
   * release with package.xml 2.0
  </notes>
