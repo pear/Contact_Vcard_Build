@@ -1,7 +1,7 @@
 --TEST--
 For bug: #15348
 --CREDITS--
-Ernesto Revilla <http://pear.php.net/user/erny1803>
+Sixto Martín <smartin at yaco dot es>
 --FILE--
 <?php
 // set to CVS's
