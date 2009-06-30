@@ -14,9 +14,9 @@ if (!class_exists('Contact_Vcard_Build')) {
 --FILE--
 <?php
 // set to CVS's
-$buildDir = realpath(dirname(__FILE__) . '/../');
-$parseDir = realpath(dirname(__FILE__) . '/../../Contact_Vcard_Parse');
-set_include_path($buildDir . ':' . $parseDir . ':' . get_include_path());
+//$buildDir = realpath(dirname(__FILE__) . '/../');
+//$parseDir = realpath(dirname(__FILE__) . '/../../Contact_Vcard_Parse');
+//set_include_path($buildDir . ':' . $parseDir . ':' . get_include_path());
 
 // report all errors
 error_reporting(E_ALL);
