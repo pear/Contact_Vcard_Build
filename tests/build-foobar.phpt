@@ -2,6 +2,7 @@
 Create a vcard 2.1 with ORG and different 'phones'.
 --SKIPIF--
 <?php
+include_once 'Contact/Vcard/Build.php';
 if (!class_exists('Contact_Vcard_Build')) {
     die('SKIP This test requires Contact_Vcard_Build.');
 }
