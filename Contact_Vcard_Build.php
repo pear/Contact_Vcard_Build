@@ -19,7 +19,6 @@
  * @license   http://www.php.net/license/2_02.txt  PHP License 2.0
  * @version   CVS: $Id$
  * @link      http://pear.php.net/package/Contact_Vcard_Build
-
  */
 require_once 'Contact/Vcard/Build.php';
 ?>
