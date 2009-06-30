@@ -1,5 +1,10 @@
 --TEST--
 A test to build a john doe vcard included in examples.
+--SKIPIF--
+<?php
+if (!class_exists('Contact_Vcard_Build')) {
+    die('SKIP This test requires Contact_Vcard_Build.');
+}
 --FILE--
 <?php
 require_once 'Contact/Vcard/Build.php';
