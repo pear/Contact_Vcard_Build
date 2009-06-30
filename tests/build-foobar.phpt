@@ -8,6 +8,7 @@ if (!class_exists('Contact_Vcard_Build')) {
 }
 --FILE--
 <?php
+include_once 'Contact/Vcard/Build.php';
 $vcard = new Contact_Vcard_Build('2.1');
 
 $vcard = new Contact_Vcard_Build();
