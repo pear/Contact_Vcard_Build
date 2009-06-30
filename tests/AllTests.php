@@ -78,7 +78,6 @@ define('Contact_Vcard_Build_DIR_PHPT', dirname(__FILE__));
  */
 class Contact_Vcard_Build_AllTests
 {
-
     /**
      * Launches the TextUI test runner
      *
@@ -89,7 +88,6 @@ class Contact_Vcard_Build_AllTests
     {
         PHPUnit_TextUI_TestRunner::run(self::suite());
     }
-
 
     /**
      * Adds all class test suites into the master suite
@@ -102,11 +100,6 @@ class Contact_Vcard_Build_AllTests
     {
         $suite = new PHPUnit_Framework_TestSuite(
             'Contact_Vcard_Build Full Suite of Unit Tests');
-
-        /*
-         * You must add each additional class-level test suite name here
-         */
-        // there are no PhpUnit test files... only PHPTs.. so nothing is listed here
 
         /*
          * add PHPT tests
