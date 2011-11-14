@@ -19,9 +19,6 @@ if (!class_exists('Contact_Vcard_Build')) {
 //$parseDir = realpath(dirname(__FILE__) . '/../../Contact_Vcard_Parse');
 //set_include_path($buildDir . ':' . $parseDir . ':' . get_include_path());
 
-// report all errors
-error_reporting(E_ALL);
-
 // include the class file
 require_once 'Contact/Vcard/Parse.php';
 require_once 'Contact/Vcard/Build.php';
