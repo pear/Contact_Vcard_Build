@@ -56,7 +56,6 @@ http://pear.php.net/dtd/package-2.0.xsd">
     <file name="test.php" role="doc" />
    </dir>
    <dir name="tests">
-    <file name="AllTests.php" role="test" />
     <file name="bug-15348.phpt" role="test" />
     <file name="build-email.phpt" role="test" />
     <file name="build-foobar.phpt" role="test" />
