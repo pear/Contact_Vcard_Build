@@ -1,0 +1,36 @@
+{
+    "authors": [
+        {
+            "email": "till@php.net",
+            "name": "Till Klampaeckel",
+            "role": "Lead"
+        },
+        {
+            "email": "pjones@ciaweb.net",
+            "name": "Paul M. Jones",
+            "role": "Lead"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Contact_Vcard_Build": "./"
+        }
+    },
+    "description": "More info available on: http://pear.php.net/package/Contact_Vcard_Build",
+    "include-path": [
+        "./"
+    ],
+    "license": "PHP License",
+    "name": "pear/contact_vcard_build",
+    "support": {
+        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Contact_Vcard_Build",
+        "source": "https://github.com/pear/Contact_Vcard_Build"
+    },
+    "type": "library",
+    "require": {
+        "pear/pear_exception": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}
